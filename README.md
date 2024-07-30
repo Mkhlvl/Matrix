@@ -3,6 +3,7 @@
 Implementation of the matrix.h library
 
 Matrix operations
+
 All operations (except matrix comparison) should return the resulting code:
 
 0 - OK

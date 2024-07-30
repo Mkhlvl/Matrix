@@ -1,0 +1,966 @@
+#include <check.h>
+#include "my_matrix.h"
+
+
+
+#test test1_my_create_matrix
+
+int a = 0;
+int b = -5;
+int c = 3;
+int d = 6;
+matrix_t A1 = {0};
+matrix_t A2;
+matrix_t A3;
+ck_assert_int_eq(my_create_matrix(c, d, &A1), 0);
+my_remove_matrix(&A1);
+ck_assert_int_eq(my_create_matrix(c, a, &A2), 1);   
+ck_assert_int_eq(my_create_matrix(b, d, &A3), 1);
+ck_assert_int_eq(my_create_matrix(c, d, &A3), 0);
+my_remove_matrix(&A3);
+
+#test test1_my_eq_matrix
+
+  matrix_t m1;
+  matrix_t m2;
+  int check_origin = 0;
+  int check_1 = my_create_matrix(3, 3, &m1);
+  int check_2 = my_create_matrix(3, 3, &m2);
+  m1.matrix[0][0] = 987654321.123456789;
+  m1.matrix[0][1] = 1111111111111.1111111111111;
+  m1.matrix[0][2] = 2.0;
+  m1.matrix[1][0] = 3.0000001;
+  m1.matrix[1][1] = 4.111111111;
+  m1.matrix[1][2] = 5123454321.5123454321;
+  m1.matrix[2][0] = 666666666666.0;
+  m1.matrix[2][1] = 7.0;
+  m1.matrix[2][2] = 987654321.9123456789;
+  m2.matrix[0][0] = 987654321.123456789;
+  m2.matrix[0][1] = 1111111111111.1111111111111;
+  m2.matrix[0][2] = 2.0;
+  m2.matrix[1][0] = 3.0000001;
+  m2.matrix[1][1] = 4.111111111;
+  m2.matrix[1][2] = 5123454321.5123454321;
+  m2.matrix[2][0] = 666666666666.0;
+  m2.matrix[2][1] = 7.0;
+  m2.matrix[2][2] = 987654321.9123456789;
+  int result = my_eq_matrix(&m1, &m2);
+  int result_origin = SUCCESS;
+  my_remove_matrix(&m1);
+  my_remove_matrix(&m2);
+  ck_assert_int_eq(check_1, check_origin);
+  ck_assert_int_eq(check_2, check_origin);
+  ck_assert_int_eq(result, result_origin);
+
+
+#test test2_my_eq_matrix
+
+  matrix_t A;
+  my_create_matrix(2, 2, &A);
+  A.matrix[0][0] = 3.3333335;
+  A.matrix[0][1] = -5;
+  A.matrix[1][0] = 6;
+  A.matrix[1][1] = -3;
+  matrix_t B;
+  my_create_matrix(2, 2, &B);
+  B.matrix[0][0] = 3.33333356;
+  B.matrix[0][1] = -5;
+  B.matrix[1][0] = 6;
+  B.matrix[1][1] = -3;
+  int result = my_eq_matrix(&A, &B);
+  ck_assert_int_eq(result, 1);
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+
+  #test test1_my_sum_matrix
+
+  matrix_t res_origin, B, A;
+  matrix_t result1={0};
+  matrix_t result={0};
+  my_create_matrix(4, 4, &A);
+  my_create_matrix(4, 4, &B);
+  my_create_matrix(4, 4, &res_origin);
+  A.matrix[0][0] = 2;
+  A.matrix[0][1] = 5;
+  A.matrix[0][2] = 7;
+  A.matrix[0][3] = -4;
+  A.matrix[1][0] = 6;
+  A.matrix[1][1] = 3;
+  A.matrix[1][2] = 4;
+  A.matrix[1][3] = 14;
+  A.matrix[2][0] = 5;
+  A.matrix[2][1] = -2;
+  A.matrix[2][2] = -3;
+  A.matrix[2][3] = -1;
+  A.matrix[3][0] = 10;
+  A.matrix[3][1] = 3;
+  A.matrix[3][2] = 9;
+  A.matrix[3][3] = -3;
+  B.matrix[0][0] = 8;
+  B.matrix[0][1] = 8;
+  B.matrix[0][2] = 3;
+  B.matrix[0][3] = 5;
+  B.matrix[1][0] = -7;
+  B.matrix[1][1] = 7;
+  B.matrix[1][2] = 1;
+  B.matrix[1][3] = 1;
+  B.matrix[2][0] = 7;
+  B.matrix[2][1] = 3;
+  B.matrix[2][2] = 4;
+  B.matrix[2][3] = -4;
+  B.matrix[3][0] = 10;
+  B.matrix[3][1] = 3;
+  B.matrix[3][2] = 9;
+  B.matrix[3][3] = -3;
+  res_origin.matrix[0][0] = 10;
+  res_origin.matrix[0][1] = 13;
+  res_origin.matrix[0][2] = 10;
+  res_origin.matrix[0][3] = 1;
+  res_origin.matrix[1][0] = -1;
+  res_origin.matrix[1][1] = 10;
+  res_origin.matrix[1][2] = 5;
+  res_origin.matrix[1][3] = 15;
+  res_origin.matrix[2][0] = 12;
+  res_origin.matrix[2][1] = 1;
+  res_origin.matrix[2][2] = 1;
+  res_origin.matrix[2][3] = -5;
+  res_origin.matrix[3][0] = 20;
+  res_origin.matrix[3][1] = 6;
+  res_origin.matrix[3][2] = 18;
+  res_origin.matrix[3][3] = -6;
+  my_sum_matrix(&A, &B, &result1);
+  my_remove_matrix(&result1);
+  int check = my_sum_matrix(&A, &B, &result);
+  int check_origin = 0;
+  ck_assert_int_eq(check, check_origin);
+  ck_assert_int_eq(my_eq_matrix(&res_origin, &result), 1);
+  for (int i = 0; i < A.rows; i++) {
+    for (int j = 0; j < B.columns; j++) {
+      ck_assert_double_eq_tol(result.matrix[i][j], res_origin.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test2_my_sum_matrix
+
+  matrix_t result, res_origin, B, A;
+  my_create_matrix(2, 2, &A);
+  my_create_matrix(2, 2, &B);
+  my_create_matrix(2, 2, &res_origin);
+  A.matrix[0][0] = 2.987654;
+  A.matrix[0][1] = -5.3456;
+  A.matrix[1][0] = 6.23;
+  A.matrix[1][1] = -3.9292;
+  B.matrix[0][0] = 4.838;
+  B.matrix[0][1] = 8.0987;
+  B.matrix[1][0] = -8;
+  B.matrix[1][1] = -0.921;
+  res_origin.matrix[0][0] = 7.825654;
+  res_origin.matrix[0][1] = 2.7531;
+  res_origin.matrix[1][0] = -1.77;
+  res_origin.matrix[1][1] = -4.8502;
+  int check = my_sum_matrix(&A, &B, &result);
+  int check_origin = 0;
+  ck_assert_int_eq(check, check_origin);
+  ck_assert_int_eq(my_eq_matrix(&res_origin, &result), 1);
+  for (int i = 0; i < A.rows; i++) {
+    for (int j = 0; j < B.columns; j++) {
+      ck_assert_double_eq_tol(result.matrix[i][j], res_origin.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test1_my_sub_matrix
+
+  matrix_t result, B, A;
+  my_create_matrix(2, 2, &A);
+  my_create_matrix(2, 2, &B);
+  A.matrix[0][0] = 0;
+  A.matrix[0][1] = 0;
+  A.matrix[1][0] = 0;
+  A.matrix[1][1] = 0;
+  B.matrix[0][0] = 0;
+  B.matrix[0][1] = 0;
+  B.matrix[1][0] = 0;
+  B.matrix[1][1] = 0;
+  int check = my_sub_matrix(&A, &B, &result);
+  int check_origin = 0;
+  ck_assert_int_eq(check, check_origin);
+  for (int i = 0; i < A.rows; i++) {
+    for (int j = 0; j < B.columns; j++) {
+      ck_assert_int_eq(result.matrix[i][j], 0);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+
+  #test test2_my_sub_matrix
+
+  matrix_t result, B, A;
+  my_create_matrix(1, 2, &A);
+  my_create_matrix(2, 2, &B);
+  A.matrix[0][0] = 1;
+  A.matrix[0][1] = 1;
+  B.matrix[0][0] = 3;
+  B.matrix[0][1] = 3;
+  B.matrix[1][0] = 3;
+  B.matrix[1][1] = 3;
+  int check = my_sub_matrix(&A, &B, &result);
+  int check_origin = 2;
+  ck_assert_int_eq(check, check_origin);
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+
+  #test test3_my_sub_matrix
+
+  matrix_t result, res_origin, B, A;
+  my_create_matrix(2, 2, &A);
+  my_create_matrix(2, 2, &B);
+  my_create_matrix(2, 2, &res_origin);
+  A.matrix[0][0] = 2.987654;
+  A.matrix[0][1] = -5.3456;
+  A.matrix[1][0] = 6.23;
+  A.matrix[1][1] = -3.9292;
+  B.matrix[0][0] = 4.838;
+  B.matrix[0][1] = 8.0987;
+  B.matrix[1][0] = -8;
+  B.matrix[1][1] = -0.921;
+  res_origin.matrix[0][0] = -1.850346;
+  res_origin.matrix[0][1] = -13.4443;
+  res_origin.matrix[1][0] = 14.23;
+  res_origin.matrix[1][1] = -3.0082;
+  int check = my_sub_matrix(&A, &B, &result);
+  int check_origin = 0;
+  ck_assert_int_eq(check, check_origin);
+  for (int i = 0; i < A.rows; i++) {
+    for (int j = 0; j < B.columns; j++) {
+      ck_assert_double_eq_tol(result.matrix[i][j], res_origin.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test4_my_sub_matrix_10
+
+  matrix_t result, B, A;
+  my_create_matrix(2, 2, &A);
+  my_create_matrix(-2, 2, &B);
+  int check = my_sub_matrix(&A, &B, &result);
+  int check_origin = 1;
+  ck_assert_int_eq(check, check_origin);
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+
+  #test test5_my_sub_matrix
+
+  matrix_t result, A;
+  matrix_t B = {0};
+  my_create_matrix(2, 2, &A);
+  A.matrix[0][0] = 3;
+  A.matrix[0][1] = 3;
+  A.matrix[1][0] = 3;
+  A.matrix[1][1] = 3;
+  int check = my_sub_matrix(&A, &B, &result);
+  int check_origin = 1;
+  ck_assert_int_eq(check, check_origin);
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+
+ #test test1_my_mult_number
+
+  matrix_t A, result, res_origin;
+  double num = 4.25;
+  int check_origin = 0;
+  int check_1 = my_create_matrix(5, 4, &A);
+  int check_3 = my_create_matrix(5, 4, &res_origin);
+  A.matrix[0][0] = 2;
+  A.matrix[0][1] = 5;
+  A.matrix[0][2] = 7;
+  A.matrix[0][3] = -4;
+  A.matrix[1][0] = 6;
+  A.matrix[1][1] = 3;
+  A.matrix[1][2] = 4;
+  A.matrix[1][3] = 14;
+  A.matrix[2][0] = 5;
+  A.matrix[2][1] = -2;
+  A.matrix[2][2] = -3;
+  A.matrix[2][3] = -1;
+  A.matrix[3][0] = 10;
+  A.matrix[3][1] = 3;
+  A.matrix[3][2] = 9;
+  A.matrix[3][3] = -3;
+  A.matrix[4][0] = -3;
+  A.matrix[4][1] = 3;
+  A.matrix[4][2] = 1;
+  A.matrix[4][3] = 5;
+  res_origin.matrix[0][0] = 8.5;
+  res_origin.matrix[0][1] = 21.25;
+  res_origin.matrix[0][2] = 29.75;
+  res_origin.matrix[0][3] = -17;
+  res_origin.matrix[1][0] = 25.5;
+  res_origin.matrix[1][1] = 12.75;
+  res_origin.matrix[1][2] = 17;
+  res_origin.matrix[1][3] = 59.5;
+  res_origin.matrix[2][0] = 21.25;
+  res_origin.matrix[2][1] = -8.5;
+  res_origin.matrix[2][2] = -12.75;
+  res_origin.matrix[2][3] = -4.25;
+  res_origin.matrix[3][0] = 42.5;
+  res_origin.matrix[3][1] = 12.75;
+  res_origin.matrix[3][2] = 38.25;
+  res_origin.matrix[3][3] = -12.75;
+  res_origin.matrix[4][0] = -12.75;
+  res_origin.matrix[4][1] = 12.75;
+  res_origin.matrix[4][2] = 4.25;
+  res_origin.matrix[4][3] = 21.25;
+  int check = my_mult_number(&A, num, &result);
+  ck_assert_int_eq(check_1, check_origin);
+  ck_assert_int_eq(check_3, check_origin);
+  ck_assert_int_eq(check, check_origin);
+  for (int i = 0; i < res_origin.rows; i++) {
+    for (int j = 0; j < res_origin.columns; j++) {
+      ck_assert_double_eq_tol(res_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+ #test test1_my_mult_matrix_1
+
+  matrix_t A, B, result, res_origin;
+  int check_origin = 0;
+  int check_1 = my_create_matrix(5, 4, &A);
+  int check_2 = my_create_matrix(4, 4, &B);
+  int check_4 = my_create_matrix(5, 4, &res_origin);
+  A.matrix[0][0] = 2;
+  A.matrix[0][1] = 5;
+  A.matrix[0][2] = 7;
+  A.matrix[0][3] = -4;
+  A.matrix[1][0] = 6;
+  A.matrix[1][1] = 3;
+  A.matrix[1][2] = 4;
+  A.matrix[1][3] = 14;
+  A.matrix[2][0] = 5;
+  A.matrix[2][1] = -2;
+  A.matrix[2][2] = -3;
+  A.matrix[2][3] = -1;
+  A.matrix[3][0] = 10;
+  A.matrix[3][1] = 3;
+  A.matrix[3][2] = 9;
+  A.matrix[3][3] = -3;
+  A.matrix[4][0] = -3;
+  A.matrix[4][1] = 3;
+  A.matrix[4][2] = 1;
+  A.matrix[4][3] = 5;
+  B.matrix[0][0] = 8;
+  B.matrix[0][1] = 8;
+  B.matrix[0][2] = 3;
+  B.matrix[0][3] = 5;
+  B.matrix[1][0] = -7;
+  B.matrix[1][1] = 7;
+  B.matrix[1][2] = 1;
+  B.matrix[1][3] = 1;
+  B.matrix[2][0] = 7;
+  B.matrix[2][1] = 3;
+  B.matrix[2][2] = 4;
+  B.matrix[2][3] = -4;
+  B.matrix[3][0] = 10;
+  B.matrix[3][1] = 3;
+  B.matrix[3][2] = 9;
+  B.matrix[3][3] = -3;
+  res_origin.matrix[0][0] = -10;
+  res_origin.matrix[0][1] = 60;
+  res_origin.matrix[0][2] = 3;
+  res_origin.matrix[0][3] = -1;
+  res_origin.matrix[1][0] = 195;
+  res_origin.matrix[1][1] = 123;
+  res_origin.matrix[1][2] = 163;
+  res_origin.matrix[1][3] = -25;
+  res_origin.matrix[2][0] = 23;
+  res_origin.matrix[2][1] = 14;
+  res_origin.matrix[2][2] = -8;
+  res_origin.matrix[2][3] = 38;
+  res_origin.matrix[3][0] = 92;
+  res_origin.matrix[3][1] = 119;
+  res_origin.matrix[3][2] = 42;
+  res_origin.matrix[3][3] = 26;
+  res_origin.matrix[4][0] = 12;
+  res_origin.matrix[4][1] = 15;
+  res_origin.matrix[4][2] = 43;
+  res_origin.matrix[4][3] = -31;
+  int check = my_mult_matrix(&A, &B, &result);
+  ck_assert_int_eq(check_1, check_origin);
+  ck_assert_int_eq(check_2, check_origin);
+  ck_assert_int_eq(check_4, check_origin);
+  ck_assert_int_eq(check, check_origin);
+  for (int i = 0; i < res_origin.rows; i++) {
+    for (int j = 0; j < res_origin.columns; j++) {
+      ck_assert_double_eq_tol(res_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test1_my_transpose
+
+  matrix_t A, result, result_origin;
+  my_create_matrix(5, 4, &A);
+  my_create_matrix(4, 5, &result_origin);
+  A.matrix[0][0] = 2;
+  A.matrix[0][1] = 5;
+  A.matrix[0][2] = 7;
+  A.matrix[0][3] = -4;
+  A.matrix[1][0] = 6;
+  A.matrix[1][1] = 3;
+  A.matrix[1][2] = 4;
+  A.matrix[1][3] = 14;
+  A.matrix[2][0] = 5;
+  A.matrix[2][1] = -2;
+  A.matrix[2][2] = -3;
+  A.matrix[2][3] = -1;
+  A.matrix[3][0] = 10;
+  A.matrix[3][1] = 3;
+  A.matrix[3][2] = 9;
+  A.matrix[3][3] = -3;
+  A.matrix[4][0] = -3;
+  A.matrix[4][1] = 3;
+  A.matrix[4][2] = 1;
+  A.matrix[4][3] = 5;
+  result_origin.matrix[0][0] = 2;
+  result_origin.matrix[0][1] = 6;
+  result_origin.matrix[0][2] = 5;
+  result_origin.matrix[0][3] = 10;
+  result_origin.matrix[0][4] = -3;
+  result_origin.matrix[1][0] = 5;
+  result_origin.matrix[1][1] = 3;
+  result_origin.matrix[1][2] = -2;
+  result_origin.matrix[1][3] = 3;
+  result_origin.matrix[1][4] = 3;
+  result_origin.matrix[2][0] = 7;
+  result_origin.matrix[2][1] = 4;
+  result_origin.matrix[2][2] = -3;
+  result_origin.matrix[2][3] = 9;
+  result_origin.matrix[2][4] = 1;
+  result_origin.matrix[3][0] = -4;
+  result_origin.matrix[3][1] = 14;
+  result_origin.matrix[3][2] = -1;
+  result_origin.matrix[3][3] = -3;
+  result_origin.matrix[3][4] = 5;
+  my_transpose(&A, &result);
+  for (int i = 0; i < result_origin.rows; i++) {
+    for (int j = 0; j < result_origin.columns; j++) {
+      ck_assert_double_eq_tol(result_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&result_origin);
+
+
+  #test test1_get_minor_2n
+
+  matrix_t A;
+  double res, origin;
+  my_create_matrix(2, 2, &A);
+  A.matrix[0][0] = 2;
+  A.matrix[0][1] = 5;
+  A.matrix[1][0] = 6;
+  A.matrix[1][1] = 3;
+  origin = -24.;
+  res = get_minor_2n(&A);
+  ck_assert_double_eq_tol(res, origin, PRECISION);
+  my_remove_matrix(&A);
+
+#test test1_get_k
+
+int i = 2;
+int j = 3;
+double res;
+res = get_k(i, j);
+ck_assert_int_eq(res, -1.);
+
+#test test1_find_det
+
+  matrix_t A;
+  double res, origin;
+  my_create_matrix(3, 3, &A);
+  A.matrix[0][0] = 2;
+  A.matrix[0][1] = 1;
+  A.matrix[0][2] = 2;
+  A.matrix[1][0] = -1;
+  A.matrix[1][1] = 0;
+  A.matrix[1][2] = 3;
+  A.matrix[2][0] = -1;
+  A.matrix[2][1] = 2;
+  A.matrix[2][2] = 3;
+  origin = -16.;
+  res = find_det(&A);
+  ck_assert_double_eq_tol(res, origin, PRECISION);
+  my_remove_matrix(&A);
+
+#test test2_find_det
+
+  matrix_t A;
+  double result;
+  my_create_matrix(4, 4, &A);
+  A.matrix[0][0] = 1;
+  A.matrix[0][1] = 2;
+  A.matrix[0][2] = 3;
+  A.matrix[0][3] = 3;
+  A.matrix[1][0] = 5;
+  A.matrix[1][1] = 3;
+  A.matrix[1][2] = 2;
+  A.matrix[1][3] = 2;
+  A.matrix[2][0] = -5;
+  A.matrix[2][1] = 3;
+  A.matrix[2][2] = 3;
+  A.matrix[2][3] = 3;
+  A.matrix[3][0] = -12.12;
+  A.matrix[3][1] = 12.12;
+  A.matrix[3][2] = 2.12;
+  A.matrix[3][3] = -2.12;
+  result = find_det(&A);
+  double result_origin = -182.32;
+  ck_assert_double_eq_tol(result, result_origin, PRECISION);
+  my_remove_matrix(&A);
+
+  #test test1_my_calc_complements
+  matrix_t A, result, res_origin;
+  my_create_matrix(3, 3, &A);
+  my_create_matrix(3, 3, &res_origin);
+  A.matrix[0][0] = 1;
+  A.matrix[0][1] = 2;
+  A.matrix[0][2] = 3;
+  A.matrix[1][0] = 0;
+  A.matrix[1][1] = 4;
+  A.matrix[1][2] = 2;
+  A.matrix[2][0] = 5;
+  A.matrix[2][1] = 2;
+  A.matrix[2][2] = 1;
+  res_origin.matrix[0][0] = 0;
+  res_origin.matrix[0][1] = 10;
+  res_origin.matrix[0][2] = -20;
+  res_origin.matrix[1][0] = 4;
+  res_origin.matrix[1][1] = -14;
+  res_origin.matrix[1][2] = 8;
+  res_origin.matrix[2][0] = -8;
+  res_origin.matrix[2][1] = -2;
+  res_origin.matrix[2][2] = 4;
+  my_calc_complements(&A, &result);
+  for (int i = 0; i < res_origin.rows; i++) {
+    for (int j = 0; j < res_origin.columns; j++) {
+      ck_assert_double_eq_tol(res_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test2_my_calc_complements
+
+  matrix_t A, result, res_origin;
+  my_create_matrix(3, 3, &A);
+  my_create_matrix(3, 3, &res_origin);
+  A.matrix[0][0] = 1;
+  A.matrix[0][1] = 2;
+  A.matrix[0][2] = 3;
+  A.matrix[1][0] = 0;
+  A.matrix[1][1] = 4;
+  A.matrix[1][2] = 2;
+  A.matrix[2][0] = 5;
+  A.matrix[2][1] = 2;
+  A.matrix[2][2] = 1;
+  res_origin.matrix[0][0] = 0;
+  res_origin.matrix[0][1] = 10;
+  res_origin.matrix[0][2] = -20;
+  res_origin.matrix[1][0] = 4;
+  res_origin.matrix[1][1] = -14;
+  res_origin.matrix[1][2] = 8;
+  res_origin.matrix[2][0] = -8;
+  res_origin.matrix[2][1] = -2;
+  res_origin.matrix[2][2] = 4;
+  my_calc_complements(&A, &result);
+  // matrix_print(&result);
+  for (int i = 0; i < res_origin.rows; i++) {
+    for (int j = 0; j < res_origin.columns; j++) {
+      ck_assert_double_eq_tol(res_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+#test test3_my_calc_complements
+
+  matrix_t A, result, res_origin;
+  my_create_matrix(-3, 3, &A);
+  my_create_matrix(3, 3, &res_origin);
+  int check = my_calc_complements(&A, &result);
+  int res = 1;
+  ck_assert_uint_eq(check, res);
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test4_my_calc_complementa
+
+  matrix_t A, result, res_origin;
+  my_create_matrix(3, 3, &A);
+  my_create_matrix(3, 3, &res_origin);
+  A.matrix[0][0] = 2;
+  A.matrix[0][1] = 0;
+  A.matrix[0][2] = 6;
+  A.matrix[1][0] = 9;
+  A.matrix[1][1] = -5;
+  A.matrix[1][2] = 11;
+  A.matrix[2][0] = 4;
+  A.matrix[2][1] = 3;
+  A.matrix[2][2] = 7;
+  res_origin.matrix[0][0] = -68;
+  res_origin.matrix[0][1] = -19;
+  res_origin.matrix[0][2] = 47;
+  res_origin.matrix[1][0] = 18;
+  res_origin.matrix[1][1] = -10;
+  res_origin.matrix[1][2] = -6;
+  res_origin.matrix[2][0] = 30;
+  res_origin.matrix[2][1] = 32;
+  res_origin.matrix[2][2] = -10;
+  my_calc_complements(&A, &result);
+  for (int i = 0; i < res_origin.rows; i++) {
+    for (int j = 0; j < res_origin.columns; j++) {
+      ck_assert_double_eq_tol(res_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test5_my_calc_complementa
+
+  matrix_t A, result, res_origin;
+  my_create_matrix(2, 2, &A);
+  my_create_matrix(2, 2, &res_origin);
+  A.matrix[0][0] = 1;
+  A.matrix[0][1] = -4;
+  A.matrix[1][0] = 22;
+  A.matrix[1][1] = 16;
+  res_origin.matrix[0][0] = 16;
+  res_origin.matrix[0][1] = -22;
+  res_origin.matrix[1][0] = 4;
+  res_origin.matrix[1][1] = 1;
+  my_calc_complements(&A, &result);
+  for (int i = 0; i < res_origin.rows; i++) {
+    for (int j = 0; j < res_origin.columns; j++) {
+      ck_assert_double_eq_tol(res_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test6_my_calc_complementa
+
+  matrix_t A, result, res_origin;
+  my_create_matrix(1, 1, &A);
+  my_create_matrix(1, 1, &res_origin);
+  A.matrix[0][0] = 5;
+  res_origin.matrix[0][0] = 1.;
+  my_calc_complements(&A, &result);
+  ck_assert_double_eq_tol(res_origin.matrix[0][0], result.matrix[0][0], PRECISION);
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test1_my_determinant
+  
+  matrix_t A;
+  double res, res_origin;
+  my_create_matrix(3, 3, &A);
+  A.matrix[0][0] = 1;
+  A.matrix[0][1] = 2;
+  A.matrix[0][2] = 3;
+  A.matrix[1][0] = 4;
+  A.matrix[1][1] = 5;
+  A.matrix[1][2] = 6;
+  A.matrix[2][0] = 7;
+  A.matrix[2][1] = 8;
+  A.matrix[2][2] = 9;
+  res_origin = 0;
+  my_determinant(&A, &res);
+  ck_assert_double_eq_tol(res_origin, res, PRECISION);
+  my_remove_matrix(&A);
+
+  #test test2_my_determinant
+  
+  matrix_t A;
+  double res, res_origin;
+  my_create_matrix(3, 3, &A);
+  A.matrix[0][0] = 2;
+  A.matrix[0][1] = 0;
+  A.matrix[0][2] = 6;
+  A.matrix[1][0] = 9;
+  A.matrix[1][1] = -5;
+  A.matrix[1][2] = 11;
+  A.matrix[2][0] = 4;
+  A.matrix[2][1] = 3;
+  A.matrix[2][2] = 7;
+  res_origin = 146;
+  my_determinant(&A, &res);
+  ck_assert_double_eq_tol(res_origin, res, PRECISION);
+  my_remove_matrix(&A);
+
+  #test test3_my_determinant
+  
+  matrix_t A;
+  double res, res_origin;
+  my_create_matrix(1, 1, &A);
+  A.matrix[0][0] = -2;
+  res_origin = -2.;
+  my_determinant(&A, &res);
+  ck_assert_double_eq_tol(res_origin, res, PRECISION);
+  my_remove_matrix(&A);
+
+#test test1_my_inverse_matrix
+
+  matrix_t A, result, res_origin;
+  my_create_matrix(3, 3, &A);
+  my_create_matrix(3, 3, &res_origin);
+  A.matrix[0][0] = 2;
+  A.matrix[0][1] = 5;
+  A.matrix[0][2] = 7;
+  A.matrix[1][0] = 6;
+  A.matrix[1][1] = 3;
+  A.matrix[1][2] = 4;
+  A.matrix[2][0] = 5;
+  A.matrix[2][1] = -2;
+  A.matrix[2][2] = -3;
+  res_origin.matrix[0][0] = 1;
+  res_origin.matrix[0][1] = -1;
+  res_origin.matrix[0][2] = 1;
+  res_origin.matrix[1][0] = -38;
+  res_origin.matrix[1][1] = 41;
+  res_origin.matrix[1][2] = -34;
+  res_origin.matrix[2][0] = 27;
+  res_origin.matrix[2][1] = -29;
+  res_origin.matrix[2][2] = 24;
+  my_inverse_matrix(&A, &result);
+  for (int i = 0; i < res_origin.rows; i++) {
+    for (int j = 0; j < res_origin.columns; j++) {
+      ck_assert_double_eq_tol(res_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test2_my_inverse_matrix
+  
+  matrix_t A, res;
+  int res_origin = 2; 
+  //D=0
+  my_create_matrix(3, 3, &A);
+ // my_create_matrix(3, 3, &res);
+  A.matrix[0][0] = 1;
+  A.matrix[0][1] = 2;
+  A.matrix[0][2] = 3;
+  A.matrix[1][0] = 4;
+  A.matrix[1][1] = 5;
+  A.matrix[1][2] = 6;
+  A.matrix[2][0] = 7;
+  A.matrix[2][1] = 8;
+  A.matrix[2][2] = 9;
+  int check = my_inverse_matrix(&A, &res); 
+  ck_assert_double_eq_tol(res_origin, check, PRECISION);
+  my_remove_matrix(&A);
+  my_remove_matrix(&res);
+
+  #test test3_my_inverse_matrix_4
+  
+  matrix_t A, result, res_origin;
+  my_create_matrix(1, 1, &A);
+  my_create_matrix(1, 1, &res_origin);
+  A.matrix[0][0] = 777;
+  res_origin.matrix[0][0] = 1.0 / 777.0;
+  int check = my_inverse_matrix(&A, &result);
+  int check_origin = 0;
+  ck_assert_double_eq_tol(res_origin.matrix[0][0], result.matrix[0][0],
+                          PRECISION);
+  ck_assert_uint_eq(check, check_origin);
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test_my_remove_matrix_1
+
+  matrix_t A;
+  my_create_matrix(3, 3, &A);
+  A.matrix[0][0] = 75301501;
+  my_remove_matrix(&A);
+  int check = (A.rows == 3) ? 0 : 1;
+  int check_origin = 1;
+  ck_assert_uint_eq(check, check_origin);
+
+  #test test_my_inverse_matrix_3
+
+  matrix_t A, result;
+  my_create_matrix(1, 2, &A);
+  A.matrix[0][0] = 777;
+  A.matrix[0][1] = 777;
+  int check = my_inverse_matrix(&A, &result);
+  int check_origin = 2;
+  ck_assert_uint_eq(check, check_origin);
+  my_remove_matrix(&A);
+  my_remove_matrix(&result);
+
+#test test2_my_mult_matrix
+  matrix_t A, B, result, res_origin;
+  int check_origin = 0;
+  int check_1 = my_create_matrix(2, 2, &A);
+  int check_2 = my_create_matrix(2, 4, &B);
+  int check_4 = my_create_matrix(2, 4, &res_origin);
+  A.matrix[0][0] = 2.987654;
+  A.matrix[0][1] = -5.3456;
+  A.matrix[1][0] = 6.23;
+  A.matrix[1][1] = -3.9292;
+  B.matrix[0][0] = 4.838;
+  B.matrix[0][1] = 8.0987;
+  B.matrix[0][2] = 8.09;
+  B.matrix[0][3] = -987;
+  B.matrix[1][0] = -8;
+  B.matrix[1][1] = -0.921;
+  B.matrix[1][2] = -0.91;
+  B.matrix[1][3] = 21;
+  res_origin.matrix[0][0] = 57.219070052;
+  res_origin.matrix[0][1] = 29.1194110498;
+  res_origin.matrix[0][2] = 29.03461686;
+  res_origin.matrix[0][3] = -3061.072098;
+  res_origin.matrix[1][0] = 61.57434;
+  res_origin.matrix[1][1] = 54.0736942;
+  res_origin.matrix[1][2] = 53.976272;
+  res_origin.matrix[1][3] = -6231.5232;
+  int check = my_mult_matrix(&A, &B, &result);
+  ck_assert_int_eq(check_1, check_origin);
+  ck_assert_int_eq(check_2, check_origin);
+  ck_assert_int_eq(check_4, check_origin);
+  ck_assert_int_eq(check, check_origin);
+  for (int i = 0; i < res_origin.rows; i++) {
+    for (int j = 0; j < res_origin.columns; j++) {
+      ck_assert_double_eq_tol(res_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test3_my_mult_matrix
+  matrix_t A, B, result, res_origin;
+  int check_origin = 0;
+  int check_1 = my_create_matrix(3, 3, &A);
+  int check_2 = my_create_matrix(3, 3, &B);
+  int check_4 = my_create_matrix(3, 3, &res_origin);
+  A.matrix[0][0] = 0;
+  A.matrix[0][1] = 9;
+  A.matrix[0][2] = 1;
+  A.matrix[1][0] = 1;
+  A.matrix[1][1] = 3;
+  A.matrix[1][2] = 7;
+  A.matrix[2][0] = 2;
+  A.matrix[2][1] = 7;
+  A.matrix[2][2] = 0;
+  B.matrix[0][0] = 0;
+  B.matrix[0][1] = 9;
+  B.matrix[0][2] = 8;
+  B.matrix[1][0] = 0;
+  B.matrix[1][1] = 9;
+  B.matrix[1][2] = 9;
+  B.matrix[2][0] = 1;
+  B.matrix[2][1] = 9;
+  B.matrix[2][2] = 6;
+  res_origin.matrix[0][0] = 1;
+  res_origin.matrix[0][1] = 90;
+  res_origin.matrix[0][2] = 87;
+  res_origin.matrix[1][0] = 7;
+  res_origin.matrix[1][1] = 99;
+  res_origin.matrix[1][2] = 77;
+  res_origin.matrix[2][0] = 0;
+  res_origin.matrix[2][1] = 81;
+  res_origin.matrix[2][2] = 79;
+  int check = my_mult_matrix(&A, &B, &result);
+  ck_assert_int_eq(check_1, check_origin);
+  ck_assert_int_eq(check_2, check_origin);
+  ck_assert_int_eq(check_4, check_origin);
+  ck_assert_int_eq(check, check_origin);
+  for (int i = 0; i < res_origin.rows; i++) {
+    for (int j = 0; j < res_origin.columns; j++) {
+      ck_assert_double_eq_tol(res_origin.matrix[i][j], result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+  my_remove_matrix(&res_origin);
+
+  #test test4_my_mult_matrix
+  matrix_t A, B, result;
+  int check_origin = 2;
+  my_create_matrix(2, 3, &A);
+  my_create_matrix(4, 2, &B);
+  int check = my_mult_matrix(&A, &B, &result);
+  ck_assert_int_eq(check, check_origin);
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+
+  #test test5_my_mult_matrix
+
+  matrix_t A, B, result;
+  int check_origin = 0;
+  my_create_matrix(2, 3, &A);
+  for (int i = 0; i < A.rows; i++) {
+    for (int j = 0; j < A.columns; j++) {
+      A.matrix[i][j] = 0.;
+    }
+  }
+  my_create_matrix(3, 12, &B);
+  for (int i = 0; i < B.rows; i++) {
+    for (int j = 0; j < B.columns; j++) {
+      B.matrix[i][j] = i + j;
+    }
+  }
+  int check = my_mult_matrix(&A, &B, &result);
+  ck_assert_int_eq(check, check_origin);
+  for (int i = 0; i < result.rows; i++) {
+    for (int j = 0; j < result.columns; j++) {
+      ck_assert_double_eq_tol(0.0, result.matrix[i][j], PRECISION);
+    }
+  }
+  my_remove_matrix(&A);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);
+
+  #test test6_my_mult_matrix
+  
+  matrix_t A, B, result;
+  int check_origin = 1;
+  my_create_matrix(-12, 3, &A);
+  my_create_matrix(3, 12, &B);
+  int check = my_mult_matrix(&A, &B, &result);
+  ck_assert_int_eq(check, check_origin);
+  my_remove_matrix(&B);
+  my_remove_matrix(&result);

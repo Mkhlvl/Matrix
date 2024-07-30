@@ -1,5 +1,5 @@
-#ifndef SRC_S21_MATRIX_H_
-#define SRC_S21_MATRIX_H_
+#ifndef SRC_MY_MATRIX_H_
+#define SRC_MY_MATRIX_H_
 
 #include <stdbool.h>
 #include <stdio.h>

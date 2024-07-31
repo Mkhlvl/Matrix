@@ -1,32 +1,27 @@
 # Matrix-C
 
-Implementation of the matrix.h library
+Индивидуальный проект
 
-Matrix operations
+ТЗ: реализовать свою библиотеку для обработки числовых матриц на языке программирования Си
+Оформить решение как статическую библиотеку
+Библиотека должна быть разработана в соответствии с принципами структурного программирования
+Подготовить покрытие unit-тестами функций библиотеки c помощью библиотеки Check
+Unit-тесты должны покрывать не менее 80% каждой функции
 
-All operations (except matrix comparison) should return the resulting code:
-
+Операции над матрицами
+Все операции (кроме сравнения матриц) должны возвращать результирующий код:
 0 - OK
-1 - Error, incorrect matrix
-2 - Calculation error (mismatched matrix sizes; matrix for which calculations cannot be performed, etc.)
+1 - Ошибка, некорректная матрица
+2 - Ошибка вычисления (несовпадающие размеры матриц; матрица, для которой нельзя провести вычисления и т.д.)
 
-Creating matrices (create_matrix)
+Основные операции с матрицами:
 
-Cleaning of matrices (remove_matrix)
-
-Matrix comparison (eq_matrix)
-
-Adding (sum_matrix) and subtracting matrices (sub_matrix)
-
-Matrix multiplication by scalar (mult_number)
-
-Multiplication of two matrices (mult_matrix)
-
-Matrix transpose (transpose)
-
-Minor of matrix and matrix of algebraic complements (calc_complements)
-
-Matrix determinant
-
-Inverse of the matrix (inverse_matrix)
-
+Создание
+Очистка
+Сравнение
+Сложение и вычитание
+Умножение матрицы на число. Умножение двух матриц
+Транспонирование матрицы
+Минор матрицы и матрица алгебраических дополнений
+Определитель матрицы
+Обратная матрица
